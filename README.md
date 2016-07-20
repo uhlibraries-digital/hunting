@@ -121,6 +121,19 @@ Scout the repository for objects in all collections.
 repo = Repository.scout
 ```
 
+Print all collection aliases in the repository.
+```ruby
+repo.collections.each do |collection_alias, collection|
+    puts collection_alias
+end
+```
+OR
+```ruby
+repo.collections.each do |collection_alias, collection|
+    puts collection.alias
+end
+```
+
 Scout the repository for objects in some collections.
 ```ruby
 repo = Repository.scout(['collection_1_alias','collection_2_alias'])

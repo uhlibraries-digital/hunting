@@ -20,9 +20,9 @@ Or install it yourself as:
 
 ### Dev Installation
 
-    bundle install
-    gem build hunting.gemspec
-    gem install .\hunting-0.1.0.gem
+    $ bundle install
+    $ gem build hunting.gemspec
+    $ gem install .\hunting-0.1.0.gem
 
 ## Usage
 

@@ -31,7 +31,7 @@ require 'hunting'
 ```
 
 ### Configuration
-Hunting requires configuration for local CONTENTdm system attributes, collections, and metadata fields.
+Hunting depends on configuration data, passed as either a hash or a yaml file, for local CONTENTdm system attributes, collections, and metadata fields.
 
 #### With Hash
 ```ruby
@@ -60,12 +60,12 @@ Default config hash
                       { 'label' => 'Title',
                         'namespace' => 'dc',
                         'map' => 'title',
-                        'type' => nil,
+                        'type' => 'descriptive',
                         'vocab' => nil},
                       { 'label' => 'Creator (LCNAF)',
                         'namespace' => 'dcterms',
                         'map' => 'creator',
-                        'type' => nil,
+                        'type' => 'agent',
                         'vocab' => 'lcnaf'},
                       { 'label' => 'Subject.Topical (AAT)',
                         'namespace' => 'dcterms',
@@ -105,7 +105,7 @@ metadata_map:
   - label:      # CONTENTdm metadata field label
     namespace:  # mapping namespace (optional)
     map:        # mapping element (optional)
-    type:       # category (optional)
+    type:       # modifier/category (optional)
     vocab:      # controlled vocabulary (optional)
   - label:      # repeat for every field
     namespace:

@@ -149,38 +149,45 @@ end
 
 ### Collection.hunt
 
-Hunt for all object metadata in Collection 1
+Hunt for all object metadata in Collection 1.
 ```ruby
 repo['collection_1_alias'].hunt
 ```
 
-Hunt for some object metadata in Collection 1
+Hunt for some object metadata in Collection 1.
 ```ruby
 repo['collection_1_alias'].hunt([7,11,42])
 ```
 
-Print the Title of Object 7 from Collection 1
+Print the Title of Object 7 from Collection 1.
 ```ruby
 puts repo['collection_1_alias'].objects[7].metadata['Title']
 ```
 
-Print the Title of Item 6 within (Compound) Object 7 from Collection 1
+Print the Title of Item 6 within (Compound) Object 7 from Collection 1.
 ```ruby
 puts repo['collection_1_alias'].objects[7].items[6].metadata['Title']
 ```
 
 ### Collection.trap
 
-Trap Object 7 from Collection 1
+Trap Object 7 from Collection 1.
 ```ruby
 object_7 = repo['collection_1_alias'].trap(7)
 ```
 
-Print some attributes of Object 7 from Collection 1
+Print some attributes of Object 7.
 ```ruby
 puts object_7.metadata['Title']
 puts object_7.type
 puts object_7.pointer
+```
+
+Print all metadata field labels and values for Object 7.
+```ruby
+object_7.metadata.each do |label, value|
+  puts "#{label}: #{value}"
+end
 ```
 
 ## Development

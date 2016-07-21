@@ -1,13 +1,6 @@
 class Repository
 
-  attr_reader :cdm_url,
-              :base_url,
-              :get_file_url,
-              :download_dir,
-              :log_dir,
-              :collections,
-              :metadata_map
-
+  attr_reader :collections
   attr_accessor :size
 
   def self.scout(aliases = 'all')
@@ -15,51 +8,28 @@ class Repository
   end
 
   def initialize(aliases)
-    repository_name = Hunting.config[:cdm]['name']
-    @progressbar = Hunting.progressbar('repository', repository_name)
-    server = Hunting.config[:cdm]['server']
-    port = Hunting.config[:cdm]['port']
-    @cdm_url = "http://#{server}:#{port}/dmwebservices/index.php?q="
-    @base_url = "http://#{server}"
-    @get_file_url = "http://#{server}/contentdm/file/get/"
-    @download_dir = Hunting.config[:cdm]['download_dir']
-    @log_dir = File.join(@download_dir, 'logs')
+    @progressbar = Hunting.progressbar('repository', Hunting.config[:cdm]['name'])
     @size = 0
-    @metadata_map = map_metadata
     @collections = scout(aliases)
     @progressbar.finish
   end
 
-  def map_metadata
-    metadata_map = {}
-    Hunting.config[:metadata_map].each do |field|
-      metadata_map.store(field['label'] , {:namespace => field['namespace'],
-                                           :map => field['map'],
-                                           :type => field['type'],
-                                           :vocab => field['vocab']})
-    end
-    metadata_map
-  end
-
   def scout(aliases)
     collections = {}
-    info = {}
-    Hunting.config[:collections].each do |collection|
-      info.store(collection['alias'].to_sym, {:alias => collection['alias'],
-                                              :title => collection['title'],
-                                              :long_title => collection['long_title']})
+    collection_info = {}
+    cdm_collection_data = JSON.parse(open(Hunting.config[:dmwebservices] + "dmGetCollectionList/json").read)
+
+    cdm_collection_data.each do |collection|
+      collection_info.store(collection['secondary_alias'], {:alias => collection['secondary_alias'], :name => collection['name']})
     end
+
     if aliases == 'all'
-      Hunting.config[:collections].each do |collection|
-        collections.store(collection['alias'],
-                          Collection.new(info[collection['alias'].to_sym],
-                                        {:cdm_url => @cdm_url, :metadata_map => @metadata_map}))
+      collection_info.each do |collection_alias, info|
+        collections.store(collection_alias, Collection.new({:alias => collection_alias, :name => info[:name]}))
       end
     else
-      aliases.each do |collection_alias|
-        collections.store(collection_alias,
-                          Collection.new(info[collection_alias.to_sym],
-                                        {:cdm_url => @cdm_url, :metadata_map => @metadata_map}))
+      aliases.each do |c_alias|
+        collections.store(c_alias, Collection.new({:alias => c_alias, :name => collection_info[c_alias][:name]}))
       end
     end
     collections

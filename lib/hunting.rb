@@ -4,7 +4,7 @@ require 'hunting/collection'
 require 'hunting/digital_object'
 require 'yaml'
 require 'json'
-require 'nokogiri'
+require 'xmlsimple'
 require 'open-uri'
 require 'ruby-progressbar'
 
@@ -15,34 +15,8 @@ module Hunting
                         'name' => 'Default Repo',
                         'server' => 'repository.address.edu',
                         'port' => 42,
-                        'download_dir' => 'path/to/download/dir',
                         'records' => 3000
                       },
-              :collections => [
-                                { 'alias' => 'coll1',
-                                  'title' => 'collection_1',
-                                  'long_title' => 'Collection One'},
-                                { 'alias' => 'coll2',
-                                  'title' => 'collection_2',
-                                  'long_title' => 'Collection Two'}
-                              ],
-              :metadata_map => [
-                                  { 'label' => 'Title',
-                                    'namespace' => 'dc',
-                                    'map' => 'title',
-                                    'type' => nil,
-                                    'vocab' => nil},
-                                  { 'label' => 'Creator (LCNAF)',
-                                    'namespace' => 'dcterms',
-                                    'map' => 'creator',
-                                    'type' => nil,
-                                    'vocab' => 'lcnaf'},
-                                  { 'label' => 'Subject.Topical (AAT)',
-                                    'namespace' => 'dcterms',
-                                    'map' => 'subject',
-                                    'type' => 'topic',
-                                    'vocab' => 'aat'}
-                               ],
               :progressbar => { 'length' => 60 }
             }
 
@@ -55,6 +29,9 @@ module Hunting
         @config[key.to_sym] = value
       end
     end
+    server = @config[:cdm]['server']
+    port = @config[:cdm]['port']
+    @config[:dmwebservices] = "http://#{server}:#{port}/dmwebservices/index.php?q="
   end
 
   # Configure through yaml file

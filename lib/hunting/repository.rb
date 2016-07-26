@@ -32,6 +32,7 @@ class Repository
         collections.store(c_alias, Collection.new({:alias => c_alias, :name => collection_info[c_alias][:name]}))
       end
     end
+    collections.each {|c_alias, collection| @size += collection.size}
     collections
   end
 end

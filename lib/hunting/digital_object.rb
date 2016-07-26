@@ -25,7 +25,7 @@ class DigitalObject
     @title = raw_metadata['title']
     @metadata = {}
     collection[:labels].each do |label, nick|
-      if raw_metadata[nick] == '{}'
+      if raw_metadata[nick] == {}
         @metadata[label] = ''
       else
         @metadata[label] = raw_metadata[nick]

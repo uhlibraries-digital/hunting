@@ -32,6 +32,7 @@ module Hunting
     server = @config[:cdm]['server']
     port = @config[:cdm]['port']
     @config[:dmwebservices] = "http://#{server}:#{port}/dmwebservices/index.php?q="
+    @config
   end
 
   # Configure through yaml file

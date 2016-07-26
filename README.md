@@ -47,32 +47,7 @@ Default config hash
             'download_dir' => 'path/to/download/dir',
             'records' => 3000
           },
-  :progressbar => { 'length' => 60 },
-  :collections => [
-                    { 'alias' => 'coll1',
-                      'title' => 'collection_1',
-                      'long_title' => 'Collection One'},
-                    { 'alias' => 'coll2',
-                      'title' => 'collection_2',
-                      'long_title' => 'Collection Two'}
-                  ],
-  :metadata_map => [
-                      { 'label' => 'Title',
-                        'namespace' => 'dc',
-                        'map' => 'title',
-                        'type' => 'descriptive',
-                        'vocab' => nil},
-                      { 'label' => 'Creator (LCNAF)',
-                        'namespace' => 'dcterms',
-                        'map' => 'creator',
-                        'type' => 'agent',
-                        'vocab' => 'lcnaf'},
-                      { 'label' => 'Subject.Topical (AAT)',
-                        'namespace' => 'dcterms',
-                        'map' => 'subject',
-                        'type' => 'topic',
-                        'vocab' => 'aat'}
-                   ]
+  :progressbar => { 'length' => 60 }
 }
 ```
 
@@ -92,26 +67,6 @@ cdm:
 
 progressbar:
   length:       # integer width for progress bar (default: 60)
-
-collections:
-  - alias:      # CONTENTdm collection alias
-    title:      # coll_title
-    long_title: # Long Collection Title
-  - alias:      # repeat for every collection
-    title:
-    long_title:
-
-metadata_map:
-  - label:      # CONTENTdm metadata field label
-    namespace:  # mapping namespace (optional)
-    map:        # mapping element (optional)
-    type:       # modifier/category (optional)
-    vocab:      # controlled vocabulary (optional)
-  - label:      # repeat for every field
-    namespace:
-    map:
-    type:
-    vocab:
 ```
 
 ### Repository.scout
@@ -141,21 +96,20 @@ repo = Repository.scout(['collection_1_alias','collection_2_alias'])
 
 Print some attributes of Collection 1.
 ```ruby
-puts repo['collection_1_alias'].title
-puts repo['collection_1_alias'].long_title
 puts repo['collection_1_alias'].alias
+puts repo['collection_1_alias'].name
 puts repo['collection_1_alias'].size
 ```
 
 Print the Title of Object 7 from Collection 1.
 ```ruby
-puts repo['collection_1_alias'].data[7][:title]
+puts repo['collection_1_alias'].records[7][:title]
 ```
 
 Store all object pointers from Collection 1 in an array.
 ```ruby
 collection_1_pointers = []
-repo['collection_1_alias'].data.each do |pointer, attributes|
+repo['collection_1_alias'].records.each do |pointer, record|
   collection_1_pointers.push(pointer)
 end
 ```

@@ -45,10 +45,12 @@ class Collection
       @progressbar.finish
       digital_object
     else
+      puts "'#{@alias}' trap #{pointer} failed"
     end
   end
 
   def hunt(pointers = 'all')
+    not_found = []
     if pointers == 'all'
       @progressbar = Hunting.progressbar('collection', @alias, @size)
       @records.each do |pointer, object|
@@ -62,9 +64,16 @@ class Collection
         if @records.has_key?(pointer)
           @objects.store(pointer, DigitalObject.new({:pointer => pointer, :type => @records[pointer][:filetype]},
                                                     {:labels => @labels, :alias => @alias, :progress => 'yes'}))
+        else
+          not_found.push(pointer)
         end
       end
       @progressbar.finish
+      if not_found.size > 0
+        print "'#{@alias}' hunt failed for: "
+        not_found.each {|object| print "#{object} "}
+        print "(#{not_found.size} of #{pointers.size})\n"
+      end
     end
   end
 end

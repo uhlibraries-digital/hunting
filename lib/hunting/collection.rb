@@ -71,7 +71,7 @@ class Collection
       @progressbar.finish
       if not_found.size > 0
         print "'#{@alias}' hunt failed for: "
-        not_found.each {|object| print "#{object} "}
+        not_found.each {|pointer| print "#{pointer} "}
         print "(#{not_found.size} of #{pointers.size})\n"
       end
     end

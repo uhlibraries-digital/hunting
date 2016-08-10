@@ -10,6 +10,8 @@ class DigitalObject
     @pointer = record[:pointer]
     @alias = collection[:alias]
     @labels = collection[:labels]
+    @metadata = {}
+    @items = {}
     case record[:type]
     when 'cpd'
       @type = 'compound'
@@ -23,8 +25,7 @@ class DigitalObject
     get_item_info = "dmGetItemInfo/#{@alias}/#{@pointer}/json"
     raw_metadata = JSON.parse(open(Hunting.config[:dmwebservices] + get_item_info).read)
     @title = raw_metadata['title']
-    @metadata = {}
-    collection[:labels].each do |label, nick|
+    @labels.each do |label, nick|
       if raw_metadata[nick] == {}
         @metadata[label] = ''
       else
@@ -32,15 +33,12 @@ class DigitalObject
       end
     end
     if @type == 'compound'
-      @items = {}
       get_c_o_info = "dmGetCompoundObjectInfo/#{@alias}/#{@pointer}/xml"
       c_o_data = XmlSimple.xml_in(open(Hunting.config[:dmwebservices] + get_c_o_info))
       c_o_data['page'].each do |page|
         @items.store(page['pageptr'][0].to_i, DigitalObject.new({:pointer => page['pageptr'][0].to_i, :type => 'file'},
                                                                 {:labels => @labels, :alias => @alias}))
       end
-    else
-      @items = nil
     end
   end
 end

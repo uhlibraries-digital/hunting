@@ -96,20 +96,20 @@ repo = Repository.scout(['collection_1_alias','collection_2_alias'])
 
 Print some attributes of Collection 1.
 ```ruby
-puts repo['collection_1_alias'].alias
-puts repo['collection_1_alias'].name
-puts repo['collection_1_alias'].size
+puts repo.collections['collection_1_alias'].alias
+puts repo.collections['collection_1_alias'].name
+puts repo.collections['collection_1_alias'].size
 ```
 
 Print the Title of Object 7 from Collection 1.
 ```ruby
-puts repo['collection_1_alias'].records[7][:title]
+puts repo.collections['collection_1_alias'].records[7][:title]
 ```
 
 Store all object pointers from Collection 1 in an array.
 ```ruby
 collection_1_pointers = []
-repo['collection_1_alias'].records.each do |pointer, record|
+repo.collections['collection_1_alias'].records.each do |pointer, record|
   collection_1_pointers.push(pointer)
 end
 ```
@@ -118,29 +118,29 @@ end
 
 Hunt for all object metadata in Collection 1.
 ```ruby
-repo['collection_1_alias'].hunt
+repo.collections['collection_1_alias'].hunt
 ```
 
 Hunt for some object metadata in Collection 1.
 ```ruby
-repo['collection_1_alias'].hunt([7,11,42])
+repo.collections['collection_1_alias'].hunt([7,11,42])
 ```
 
 Print the Title of Object 7 from Collection 1.
 ```ruby
-puts repo['collection_1_alias'].objects[7].metadata['Title']
+puts repo.collections['collection_1_alias'].objects[7].metadata['Title']
 ```
 
 Print the Title of Item 6 within (Compound) Object 7 from Collection 1.
 ```ruby
-puts repo['collection_1_alias'].objects[7].items[6].metadata['Title']
+puts repo.collections['collection_1_alias'].objects[7].items[6].metadata['Title']
 ```
 
 ### Collection.trap
 
 Trap Object 7 from Collection 1.
 ```ruby
-object_7 = repo['collection_1_alias'].trap(7)
+object_7 = repo.collections['collection_1_alias'].trap(7)
 ```
 
 Print some attributes of Object 7.
@@ -165,7 +165,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/hunting.
+Bug reports and pull requests are welcome on GitHub at https://github.com/uhlibraries-digital/hunting.
 
 
 ## License

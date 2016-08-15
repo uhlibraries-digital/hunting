@@ -35,10 +35,26 @@ class DigitalObject
     if @type == 'compound'
       get_c_o_info = "dmGetCompoundObjectInfo/#{@alias}/#{@pointer}/xml"
       c_o_data = XmlSimple.xml_in(open(Hunting.config[:dmwebservices] + get_c_o_info))
-      c_o_data['page'].each do |page|
-        @items.store(page['pageptr'][0].to_i, DigitalObject.new({:pointer => page['pageptr'][0].to_i, :type => 'file'},
-                                                                {:labels => @labels, :alias => @alias}))
+      if c_o_data['page'] == nil
+        content = open(Hunting.config[:dmwebservices] + get_c_o_info) {|f| f.read}
+        doc = XmlSimple::Document.new content
+        doc.elements.each("cpd/node/*") {|hierarchy| flatten(hierarchy)}
+      else
+        c_o_data['page'].each do |page|
+          @items.store(page['pageptr'][0].to_i, DigitalObject.new({:pointer => page['pageptr'][0].to_i, :type => 'file'},
+                                                                  {:labels => @labels, :alias => @alias}))
+        end
       end
+    end
+  end
+
+  def flatten(hierarchy)
+    if hierarchy.elements['pageptr'] == nil
+      hierarchy.elements.each {|node| flatten(node)}
+    else
+      pointer = hierarchy.elements['pageptr'].text.to_i
+      @items.store(pointer, DigitalObject.new({:pointer => pointer, :type => 'file'},
+                                              {:labels => @labels, :alias => @alias}))
     end
   end
 end

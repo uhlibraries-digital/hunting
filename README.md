@@ -4,6 +4,8 @@ Hunting is a Ruby wrapper for the CONTENTdm API. Quickly 'Scout' for collections
 
 ## Installation
 
+__This gem has not yet been published to RubyGems. Please use the Dev Installation instructions below after cloning the repository.__
+
 Add this line to your application's Gemfile:
 
 ```ruby
